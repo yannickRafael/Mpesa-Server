@@ -1,6 +1,6 @@
 const http = require('http');
 const querystring = require('querystring');
-const transaction = require('./mpesa.js');
+const transaction = require('../mpesa.js');
 const { log } = require('console');
 
 
