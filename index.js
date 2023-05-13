@@ -1,10 +1,13 @@
 const http = require('http');
 const querystring = require('querystring');
-const transaction = require('./mpesa.js')
+const transaction = require('./mpesa.js');
+const { log } = require('console');
 
 
 
 http.createServer(function (req, res) {
+
+    console.log('Servidor iniciou')
     const query = querystring.parse(req.url.split('?')[1]); // Get the query parameters from the URL
   
     const amount = query.amount;
@@ -13,6 +16,7 @@ http.createServer(function (req, res) {
     const thirdPartyRef = query.third_party_ref;
   
     if (amount && phone && ref && thirdPartyRef) {
+      
       transaction.c2b({
         amount: amount,
         msisdn: phone,
