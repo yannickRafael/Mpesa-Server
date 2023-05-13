@@ -3,6 +3,8 @@ const querystring = require('querystring');
 const transaction = require('./mpesa.js');
 const { log } = require('console');
 
+console.log('iniciado')
+
 
 
 http.createServer(function (req, res) {
