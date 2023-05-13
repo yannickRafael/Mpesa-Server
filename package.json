@@ -2,7 +2,7 @@
   "name": "mpesa-server",
   "version": "1.0.0",
   "description": "uma app que faz requests para a api do mpesa para aceder ao servico C2B",
-  "main": "./dist/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "funcionando"
   },
