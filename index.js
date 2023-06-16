@@ -1,18 +1,17 @@
-const http = require('http');
-const querystring = require('querystring');
+const express = require('express');
 const transaction = require('./mpesa.js');
-const { log } = require('console');
 
-console.log('iniciado');
+const app = express();
+const port = 8080;
 
-http.createServer(async function (req, res) {
+app.get('/', async (req, res) => {
   console.log('Servidor iniciou');
-  const query = querystring.parse(req.url.split('?')[1]); // Get the query parameters from the URL
+  const query = req.query; // Obtém os parâmetros da consulta da URL
 
-  const amount = query.amount;
-  const phone = query.phone;
-  const ref = query.ref;
-  const thirdPartyRef = query.third_party_ref;
+  const amount = query.amount; // Valor da transação
+  const phone = query.phone; // Número de telefone
+  const ref = query.ref; // Referência da transação
+  const thirdPartyRef = query.third_party_ref; // Referência de terceiros
 
   if (amount && phone && ref && thirdPartyRef) {
     try {
@@ -23,17 +22,16 @@ http.createServer(async function (req, res) {
         third_party_reference: thirdPartyRef
       });
       console.log(response);
-      res.writeHead(200, response);
-      res.end();
+      res.sendStatus(200); // Envie o status de sucesso (200)
     } catch (error) {
       console.log(error);
-      res.writeHead(500, {'Content-Type': 'text/plain'});
-      res.write('An error occurred.');
-      res.end();
+      res.sendStatus(500); // Envie o status de erro do servidor (500)
     }
   } else {
-    res.writeHead(400, {'Content-Type': 'text/plain'});
-    res.write('Missing query parameters.');
-    res.end();
+    res.sendStatus(400); // Envie o status de requisição inválida (400)
   }
-}).listen(8080);
+});
+
+app.listen(port, () => {
+  console.log(`Servidor iniciado na porta ${port}`);
+});
