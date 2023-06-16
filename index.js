@@ -1,17 +1,21 @@
 const express = require('express');
+const querystring = require('querystring');
 const transaction = require('./mpesa.js');
+const { log } = require('console');
+
+console.log('iniciado');
 
 const app = express();
 const port = 8080;
 
 app.get('/', async (req, res) => {
   console.log('Servidor iniciou');
-  const query = req.query; // Obtém os parâmetros da consulta da URL
+  const query = querystring.parse(req.url.split('?')[1]); // Obter os parâmetros da consulta da URL
 
-  const amount = query.amount; // Valor da transação
-  const phone = query.phone; // Número de telefone
-  const ref = query.ref; // Referência da transação
-  const thirdPartyRef = query.third_party_ref; // Referência de terceiros
+  const amount = query.amount;
+  const phone = query.phone;
+  const ref = query.ref;
+  const thirdPartyRef = query.third_party_ref;
 
   if (amount && phone && ref && thirdPartyRef) {
     try {
@@ -22,13 +26,13 @@ app.get('/', async (req, res) => {
         third_party_reference: thirdPartyRef
       });
       console.log(response);
-      res.sendStatus(200); // Envie o status de sucesso (200)
+      res.status(200).send(response); // Enviar status de sucesso (200) e a resposta
     } catch (error) {
       console.log(error);
-      res.sendStatus(500); // Envie o status de erro do servidor (500)
+      res.status(500).send('An error occurred.'); // Enviar status de erro do servidor (500) e mensagem de erro
     }
   } else {
-    res.sendStatus(400); // Envie o status de requisição inválida (400)
+    res.status(400).send('Missing query parameters.'); // Enviar status de requisição inválida (400) e mensagem de erro
   }
 });
 
