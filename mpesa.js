@@ -17,7 +17,7 @@ const config = {
 // Instancie o objeto Transaction
 const transaction = new Transaction(config);
 
-// Defina uma rota para iniciar a transação C2B
+// Rota para iniciar a transação C2B
 app.get('/c2b', async (req, res) => {
   try {
     // Inicie a transação C2B
